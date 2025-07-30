@@ -1,0 +1,16 @@
+FROM quay.io/keycloak/keycloak:26.3.2
+
+ENV  KEYCLOAK_ADMIN=admin \
+     KEYCLOAK_ADMIN_PASSWORD=admin \
+     KC_HTTP_ENABLED=true \
+     KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/keycloak.key \
+     KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/keycloak.pem \
+     KC_HTTPS_TRUST_STORE_FILE=/opt/keycloak/conf/truststore.jks \
+     KC_HTTPS_TRUST_STORE_PASSWORD=123456
+
+COPY --chmod=775 keycloak.key keycloak.pem truststore.jks /opt/keycloak/conf/
+COPY --chmod=775 ./config/ /opt/keycloak/data/import
+
+EXPOSE 8443 8080
+
+CMD ["start-dev", "--import-realm"]
