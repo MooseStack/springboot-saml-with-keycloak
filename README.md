@@ -40,7 +40,7 @@ if you want to redo it:
 
 
 
-### Start App
+### Build and Start App directly with maven3.x and java 21+
 
 1. `cd app`
 
@@ -54,6 +54,15 @@ if you want to redo it:
 3. `mvn spring-boot:run` or `mvn clean install -DskipTests && java -jar ./target/*jar`
 
 4. Access app on http://localhost:8081
+
+
+### Build and start App directly with podman/docker
+
+1. Get the metadata.xml from the IDP (http://localhost:8080/realms/spring-boot-keycloak/protocol/saml/descriptor) and update the KeyName and X509Certificate in: [metadata-idp.xml](app/src/main/resources/metadata/metadata-idp.xml)
+   
+2. `podman build -t java ./app`
+
+3. `podman run -dit --name java --replace -p 8081:8081 localhost/java:latest`
 
 
 ### Java app endpoints

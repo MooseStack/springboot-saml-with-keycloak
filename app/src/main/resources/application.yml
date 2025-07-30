@@ -31,6 +31,7 @@ spring:
               response-url: "{baseUrl}/logout/saml2/sso"
             assertingparty:
               ## I recommend you use the url instead of the metadata file since the certificate details can change from the IDP side
-              # metadata-uri: classpath:metadata/metadata-idp.xml
+              ## Preferbly only use this if running on podman/docker
+              metadata-uri: classpath:metadata/metadata-idp.xml
               ## if https is used for fetching metadata, ensure the underlying OS or JVM trusts the certificate of remote IDP server (keycloak)
-              metadata-uri: http://localhost:8080/realms/spring-boot-keycloak/protocol/saml/descriptor
+              #metadata-uri: http://localhost:8080/realms/spring-boot-keycloak/protocol/saml/descriptor
