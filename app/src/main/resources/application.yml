@@ -1,0 +1,36 @@
+server.port: 8081
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        security.saml2: TRACE
+      opensaml: DEBUG
+
+# All below URLs are for Keycloak running on localhost:8443 and localhost:8080
+spring:
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          keycloak:
+            identityprovider:
+              entity-id: https://localhost:8443/realms/spring-boot-keycloak
+              verification.credentials:
+                - certificate-location: classpath:saml-signing-verification.pem
+              singlesignon.url: https://localhost:8443/realms/spring-boot-keycloak/protocol/saml
+              singlesignon.sign-request: false
+            signing:
+              credentials:
+                - private-key-location: classpath:saml-signing-verification.key
+                  certificate-location: classpath:saml-signing-verification.pem
+            singlelogout:
+              url: https://localhost:8443/realms/spring-boot-keycloak
+              binding: POST
+              response-url: "{baseUrl}/logout/saml2/sso"
+            assertingparty:
+              ## I recommend you use the url instead of the metadata file since the certificate details can change from the IDP side
+              # metadata-uri: classpath:metadata/metadata-idp.xml
+              ## if https is used for fetching metadata, ensure the underlying OS or JVM trusts the certificate of remote IDP server (keycloak)
+              metadata-uri: http://localhost:8080/realms/spring-boot-keycloak/protocol/saml/descriptor
